@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eProdaja.Controllers
 {
+    /*
     [ApiController]
     [Route("[controller]")]
     public class ProizvodiController : ControllerBase
@@ -12,6 +13,7 @@ namespace eProdaja.Controllers
         private readonly IProizvodiService _proizvodiService;
         private readonly ILogger<WeatherForecastController> _logger;
 
+        // controller zavisi od interfejsa, ne od impl.
         public ProizvodiController(ILogger<WeatherForecastController> logger, IProizvodiService proizvodiService)
         {
             _logger = logger;
@@ -23,5 +25,5 @@ namespace eProdaja.Controllers
         {
             return _proizvodiService.Get();
         }
-    }
+    }*/
 }
