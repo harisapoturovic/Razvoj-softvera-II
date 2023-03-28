@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eProdaja.Model.Requests;
 using eProdaja.Services.Database;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +23,9 @@ namespace eProdaja.Services
         }
 
 
-        public List<Model.Korisnici> Get()
+        public async Task<List<Model.Korisnici>> Get()
         {
-            var entityKorisnici = _context.Korisnicis.ToList();
+            var entityKorisnici = await _context.Korisnicis.ToListAsync();
             // ručno mapiranje
             //var list = new List<Model.Korisnici>();
             //foreach (var item in entityKorisnici)

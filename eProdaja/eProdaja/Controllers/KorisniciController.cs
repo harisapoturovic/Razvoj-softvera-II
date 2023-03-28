@@ -17,9 +17,9 @@ namespace eProdaja.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Model.Korisnici> Get()
+        public async Task<IEnumerable<Model.Korisnici>> Get()
         {
-            return _korisniciService.Get();
+            return await _korisniciService.Get();
         }
 
         [HttpPost]
