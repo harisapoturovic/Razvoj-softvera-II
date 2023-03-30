@@ -1,25 +1,32 @@
-﻿using eProdaja.Services;
+﻿using eProdaja.Model;
+using eProdaja.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eProdaja.Controllers
 {
     [Route("api/[controller]")]
-    public class BaseController<T> : ControllerBase where T : class
+    public class BaseController<T, Tsearch> : ControllerBase where T : class where Tsearch : class
     {
-        private readonly IService<T> _service;
-        private readonly ILogger<BaseController<T>> _logger;
+        private readonly IService<T, Tsearch> _service;
+        private readonly ILogger<BaseController<T, Tsearch>> _logger;
 
-        public BaseController(IService<T> service, ILogger<BaseController<T>> logger)
+        public BaseController(IService<T, Tsearch> service, ILogger<BaseController<T, Tsearch>> logger)
         {
             _service = service;
             _logger = logger;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<T>> Get()
+        public async Task<PagedResult<T>> Get([FromQuery] Tsearch? search=null)
         {
-            return await _service.Get();
+            return await _service.Get(search);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<T> GetById(int id)
+        {
+            return await _service.GetById(id);
         }
     }
 }

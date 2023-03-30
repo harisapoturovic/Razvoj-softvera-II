@@ -1,4 +1,5 @@
-﻿using System;
+﻿using eProdaja.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace eProdaja.Services
 {
-    public interface IService<T>
+    public interface IService<T, Tsearch> where Tsearch : class
     {
-        Task<List<T>> Get();
+        Task<PagedResult<T>> Get(Tsearch search = null);
+        Task<T> GetById(int id);
     }
 }

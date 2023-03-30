@@ -1,3 +1,4 @@
+using eProdaja.Model.SearchObjects;
 using eProdaja.Services;
 using eProdaja.Services.Database;
 using Microsoft.AspNetCore.Hosting;
@@ -9,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddTransient<IProizvodiService, ProizvodiService>();
 builder.Services.AddTransient<IKorisniciService, KorisniciService>();
 builder.Services.AddTransient<IJediniceMjereService, JediniceMjereService>();
-builder.Services.AddTransient<IService<eProdaja.Model.VrsteProizvoda>, BaseService<eProdaja.Model.VrsteProizvoda, VrsteProizvodum>>();
+builder.Services.AddTransient<IService<eProdaja.Model.VrsteProizvoda, BaseSearchObject>, BaseService<eProdaja.Model.VrsteProizvoda, VrsteProizvodum, BaseSearchObject>>();
 
 
 builder.Services.AddControllers();
