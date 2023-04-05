@@ -1,6 +1,5 @@
 ﻿using eProdaja.Model.Requests;
 using eProdaja.Model.SearchObjects;
-using eProdaja.Services.Database;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,9 @@ using System.Threading.Tasks;
 
 namespace eProdaja.Services
 {
-    public interface IKorisniciService : ICRUDService<Model.Korisnici, KorisniciSearchObject, KorisniciInsertRequest, KorisniciUpdateRequest>
+    public interface ICRUDService<T, TSearch, TInsert, TUpdate> : IService<T, TSearch> where  T: class where TSearch : BaseSearchObject
     {
+        Task<T> Insert(TInsert insert);
+        Task<T> Update(int id, TUpdate update);
     }
 }

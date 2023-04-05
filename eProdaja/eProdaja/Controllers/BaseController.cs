@@ -8,8 +8,8 @@ namespace eProdaja.Controllers
     [Route("api/[controller]")]
     public class BaseController<T, Tsearch> : ControllerBase where T : class where Tsearch : class
     {
-        private readonly IService<T, Tsearch> _service;
-        private readonly ILogger<BaseController<T, Tsearch>> _logger;
+        protected readonly IService<T, Tsearch> _service;
+        protected readonly ILogger<BaseController<T, Tsearch>> _logger;
 
         public BaseController(IService<T, Tsearch> service, ILogger<BaseController<T, Tsearch>> logger)
         {

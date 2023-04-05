@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using eProdaja.Model.Requests;
+using eProdaja.Model.SearchObjects;
 using eProdaja.Services.Database;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,51 +13,17 @@ using System.Threading.Tasks;
 
 namespace eProdaja.Services
 {
-    public class KorisniciService : IKorisniciService
+    public class KorisniciService : BaseCRUDService<Model.Korisnici, Korisnici, KorisniciSearchObject, KorisniciInsertRequest, KorisniciUpdateRequest>, IKorisniciService
     {
-        EProdajaContext _context;
-        public IMapper _mapper { get; set; }
-
         public KorisniciService(EProdajaContext context, IMapper mapper)
+            :base(context, mapper)
         {
-            _context = context;
-            _mapper = mapper;
         }
 
-
-        public async Task<List<Model.Korisnici>> Get()
+        public override async Task BeforeInsert(Korisnici entity, KorisniciInsertRequest insert)
         {
-            var entityKorisnici = await _context.Korisnicis.ToListAsync();
-            // ručno mapiranje
-            //var list = new List<Model.Korisnici>();
-            //foreach (var item in entityKorisnici)
-            //{
-            //    list.Add(new Model.Korisnici()
-            //    {
-            //        KorisnikId = item.KorisnikId,
-            //        KorisnickoIme = item.KorisnickoIme,
-            //        Ime = item.Ime,
-            //        Prezime = item.Prezime,
-            //        Email = item.Email,
-            //        Telefon=item.Telefon
-            //    });
-            //}
-            //return list;
-            return _mapper.Map<List<Model.Korisnici>>(entityKorisnici);
-        }
-
-        public Model.Korisnici Insert(KorisniciInsertRequest request)
-        {
-            var entity = new Korisnici();
-            _mapper.Map(request, entity);
-
             entity.LozinkaSalt = GenerateSalt();
-            entity.LozinkaHash = GenerateHash(entity.LozinkaSalt, request.Password);
-
-            _context.Korisnicis.Add(entity);
-            _context.SaveChanges();
-
-            return _mapper.Map<Model.Korisnici>(entity);
+            entity.LozinkaHash = GenerateHash(entity.LozinkaSalt, insert.Password);
         }
 
         public static string GenerateSalt()
@@ -91,5 +59,16 @@ namespace eProdaja.Services
 
             return _mapper.Map<Model.Korisnici>(entity);
         }
+
+        public override IQueryable<Korisnici> AddInclude(IQueryable<Korisnici> query, KorisniciSearchObject? search = null)
+        {
+            if(search?.IsUlogeIncluded==true)
+            {
+                query = query.Include("KorisniciUloges.Uloga");
+            }
+
+            return base.AddInclude(query, search);
+        }
+
     }
 }

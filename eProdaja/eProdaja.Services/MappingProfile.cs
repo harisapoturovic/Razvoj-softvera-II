@@ -14,6 +14,8 @@ namespace eProdaja.Services
             CreateMap<KorisniciUpdateRequest, Korisnici>();
             CreateMap<JediniceMjere, Model.JediniceMjere>();
             CreateMap<VrsteProizvodum, Model.VrsteProizvoda>();
+            CreateMap<KorisniciUloge, Model.KorisniciUloge>();
+            CreateMap<Uloge, Model.Uloge>();
         }
 
     }

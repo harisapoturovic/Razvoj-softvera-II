@@ -32,6 +32,8 @@ namespace eProdaja.Services
 
             query = AddFilter(query, search);
 
+            query = AddInclude(query, search);
+
             result.Count = await query.CountAsync(); //broj redova u bazi nakon filtriranja
 
             if (search?.Page.HasValue==true && search?.PageSize.HasValue==true)
@@ -44,6 +46,11 @@ namespace eProdaja.Services
             var tmp = _mapper.Map<List<T>>(list);
             result.Result = tmp;
             return result;
+        }
+
+        public virtual IQueryable<Tdb> AddInclude(IQueryable<Tdb> query, Tsearch? search = null)
+        {
+            return query;
         }
 
         public virtual IQueryable<Tdb> AddFilter(IQueryable<Tdb> query, Tsearch? search= null)
