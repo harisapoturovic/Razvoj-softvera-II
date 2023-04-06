@@ -11,7 +11,7 @@ namespace eProdaja.Model.Requests
         public string Naziv { get; set; }
         public decimal Cijena { get; set; }
         public int JedinicaMjereId { get; set; }
-        public byte[] Slika { get; set; }
-        public byte[] SlikaThumb { get; set; }
+        public byte[]? Slika { get; set; }
+        public byte[]? SlikaThumb { get; set; }
     }
 }

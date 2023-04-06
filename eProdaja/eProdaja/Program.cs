@@ -1,6 +1,7 @@
 using eProdaja.Model.SearchObjects;
 using eProdaja.Services;
 using eProdaja.Services.Database;
+using eProdaja.Services.ProizvodiStateMachine;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,11 @@ builder.Services.AddTransient<IProizvodiService, ProizvodiService>();
 builder.Services.AddTransient<IKorisniciService, KorisniciService>();
 builder.Services.AddTransient<IJediniceMjereService, JediniceMjereService>();
 builder.Services.AddTransient<IService<eProdaja.Model.VrsteProizvoda, BaseSearchObject>, BaseService<eProdaja.Model.VrsteProizvoda, VrsteProizvodum, BaseSearchObject>>();
+
+builder.Services.AddTransient<BaseState>();
+builder.Services.AddTransient<InitialProductState>();
+builder.Services.AddTransient<DraftProductState>();
+builder.Services.AddTransient<ActiveProductState>();
 
 
 builder.Services.AddControllers();
