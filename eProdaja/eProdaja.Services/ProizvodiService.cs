@@ -16,7 +16,7 @@ namespace eProdaja.Services
     {
         public BaseState _baseState { get; set; }
 
-        public ProizvodiService(EProdajaContext context, IMapper mapper, BaseState baseState) 
+        public ProizvodiService(EProdajaContext context, IMapper mapper, BaseState baseState)
             : base(context, mapper)
         {
             _baseState = baseState;
@@ -45,6 +45,24 @@ namespace eProdaja.Services
             var state = _baseState.CreateState(entity.StateMachine);
 
             return await state.Activate(id);
+        }
+
+        public async Task<Model.Proizvodi> Hide(int id)
+        {
+            var entity = await _context.Proizvodis.FindAsync(id);
+
+            var state = _baseState.CreateState(entity.StateMachine);
+
+            return await state.Hide(id);
+        }
+
+        public async Task<List<string>> AllowedActions(int id)
+        {
+            var entity = await _context.Proizvodis.FindAsync(id);
+
+            var state = _baseState.CreateState(entity?.StateMachine ?? "initial"); //entity može biti null ako se radi insert (id==0)
+
+            return await state.AllowedActions();
         }
     }
 }

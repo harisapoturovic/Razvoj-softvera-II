@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Azure.Core;
+using eProdaja.Model;
 using eProdaja.Model.Requests;
 using eProdaja.Services.Database;
 using Microsoft.IdentityModel.Abstractions;
@@ -27,6 +28,18 @@ namespace eProdaja.Services.ProizvodiStateMachine
 
             _mapper.Map(request, entity);
 
+            if (entity.Cijena < 0)
+            {
+                throw new Exception("Cijena ne moze biti u minusu"); // => server side error
+            }
+
+
+            if (entity.Cijena < 1)
+            {
+                throw new UserException("Cijena ispod minimuma");
+            }
+
+
             await _context.SaveChangesAsync();
 
             return _mapper.Map<Model.Proizvodi>(entity);
@@ -43,6 +56,16 @@ namespace eProdaja.Services.ProizvodiStateMachine
             await _context.SaveChangesAsync();
 
             return _mapper.Map<Model.Proizvodi>(entity);
+        }
+
+        public override async Task<List<string>> AllowedActions()
+        {
+            var list = await base.AllowedActions(); //bazna vraća praznu listu
+
+            list.Add("Update");
+            list.Add("Activate");
+
+            return list;
         }
     }
 }

@@ -31,5 +31,14 @@ namespace eProdaja.Services.ProizvodiStateMachine
 
             return _mapper.Map<Model.Proizvodi>(entity);
         }
+
+        public override async Task<List<string>> AllowedActions()
+        {
+            var list = await base.AllowedActions(); //bazna vraća praznu listu
+
+            list.Add("Insert");
+
+            return list;
+        }
     }
 }

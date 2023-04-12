@@ -1,3 +1,4 @@
+using eProdaja.Filters;
 using eProdaja.Model.SearchObjects;
 using eProdaja.Services;
 using eProdaja.Services.Database;
@@ -19,7 +20,10 @@ builder.Services.AddTransient<DraftProductState>();
 builder.Services.AddTransient<ActiveProductState>();
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(x =>
+{
+    x.Filters.Add<ErrorFilter>();
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

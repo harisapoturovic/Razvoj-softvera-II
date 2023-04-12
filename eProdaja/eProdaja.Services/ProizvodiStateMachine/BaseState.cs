@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using eProdaja.Model;
 using eProdaja.Model.Requests;
 using eProdaja.Services.Database;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,7 @@ namespace eProdaja.Services.ProizvodiStateMachine
         protected IMapper _mapper { get; set; }
         public IServiceProvider _serviceProvider { get; set; }
 
-        public BaseState(IServiceProvider serviceProvider,  EProdajaContext context, IMapper mapper)
+        public BaseState(IServiceProvider serviceProvider, EProdajaContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -25,27 +26,27 @@ namespace eProdaja.Services.ProizvodiStateMachine
 
         public virtual Task<Model.Proizvodi> Insert(ProizvodiInsertRequest request)
         {
-            throw new Exception("Not allowed");
+            throw new UserException("Not allowed");
         }
 
         public virtual Task<Model.Proizvodi> Update(int id, ProizvodiUpdateRequest request)
         {
-            throw new Exception("Not allowed");
+            throw new UserException("Not allowed");
         }
 
         public virtual Task<Model.Proizvodi> Activate(int id)
         {
-            throw new Exception("Not allowed");
+            throw new UserException("Not allowed");
         }
 
         public virtual Task<Model.Proizvodi> Hide(int id)
         {
-            throw new Exception("Not allowed");
+            throw new UserException("Not allowed");
         }
 
         public virtual Task<Model.Proizvodi> Delete(int id)
         {
-            throw new Exception("Not allowed");
+            throw new UserException("Not allowed");
         }
 
         public BaseState CreateState(string stateName)  //stateName = property StateMachine
@@ -53,6 +54,7 @@ namespace eProdaja.Services.ProizvodiStateMachine
             switch (stateName)
             {
                 case "initial":
+                case null: // ako se radi insert 
                     return _serviceProvider.GetService<InitialProductState>();
                     break;
                 case "draft":
@@ -63,8 +65,13 @@ namespace eProdaja.Services.ProizvodiStateMachine
                     break;
 
                 default:
-                    throw new Exception("Not allowed");
+                    throw new UserException("Not allowed");
             }
+        }
+
+        public virtual async Task<List<string>> AllowedActions()
+        {
+            return new List<string>(); //po defaultu nije ništa dozvoljeno
         }
     }
 }
