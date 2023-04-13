@@ -3,6 +3,7 @@ using Azure.Core;
 using eProdaja.Model;
 using eProdaja.Model.Requests;
 using eProdaja.Services.Database;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -15,9 +16,11 @@ namespace eProdaja.Services.ProizvodiStateMachine
 {
     public class DraftProductState : BaseState
     {
-        public DraftProductState(IServiceProvider serviceProvider, EProdajaContext context, IMapper mapper) 
+        ILogger<DraftProductState> _logger;
+        public DraftProductState(ILogger<DraftProductState> logger,IServiceProvider serviceProvider, EProdajaContext context, IMapper mapper) 
             : base(serviceProvider, context, mapper)
         {
+            _logger = logger;
         }
 
         public override async Task<Model.Proizvodi> Update(int id, ProizvodiUpdateRequest request)
@@ -47,6 +50,13 @@ namespace eProdaja.Services.ProizvodiStateMachine
 
         public override async Task<Model.Proizvodi> Activate(int id)
         {
+            _logger.LogInformation($"Aktivacija proizvoda: {id}");
+
+            _logger.LogWarning($"W: Aktivacija proizvoda: {id}");
+
+            _logger.LogError($"E: Aktivacija proizvoda: {id}");
+
+            
             var set = _context.Set<Database.Proizvodi>();
 
             var entity = await set.FindAsync(id);
