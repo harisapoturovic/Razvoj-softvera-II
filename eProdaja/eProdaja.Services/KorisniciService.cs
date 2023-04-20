@@ -70,5 +70,22 @@ namespace eProdaja.Services
             return base.AddInclude(query, search);
         }
 
+        public async Task<Model.Korisnici> Login(string username, string password)
+        {
+            var entitiy = await _context.Korisnicis.Include("KorisniciUloges.Uloga").FirstOrDefaultAsync(x => x.KorisnickoIme == username);
+
+            if (entitiy == null)
+            {
+                return null;
+            }
+
+            var hash = GenerateHash(entitiy.LozinkaSalt, password);
+            if (hash != entitiy.LozinkaHash)
+            {
+                return null;
+            }
+
+            return _mapper.Map<Model.Korisnici>(entitiy);
+        }
     }
 }

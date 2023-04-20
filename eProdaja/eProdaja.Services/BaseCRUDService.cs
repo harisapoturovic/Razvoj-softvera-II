@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using eProdaja.Model.SearchObjects;
 using eProdaja.Services.Database;
+using Microsoft.AspNetCore.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace eProdaja.Services
         {
 
         }
-
+        
         public virtual async Task<T> Insert(TInsert insert)
         {
             // _context iz BaseService
