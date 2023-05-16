@@ -23,7 +23,7 @@ services:
       - ConnectionStrings:DefaultConnection=Server=eprodaja-sql,1433;Database=eProdajaVjezbe;User=sa;Password=QWElkj132!;ConnectRetryCount=0; TrustServerCertificate=True
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - 7114:7114
+      - 7298:7114
     networks:
       - eprodajanet2023
     links:
