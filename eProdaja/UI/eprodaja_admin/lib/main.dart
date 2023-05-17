@@ -1,3 +1,4 @@
+import 'package:eprodaja_admin/screens/product_list_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -11,21 +12,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const LayoutWidget()
-    );
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          // This is the theme of your application.
+          //
+          // Try running your application with "flutter run". You'll see the
+          // application has a blue toolbar. Then, without quitting the app, try
+          // changing the primarySwatch below to Colors.green and then invoke
+          // "hot reload" (press "r" in the console where you ran "flutter run",
+          // or simply save your changes to "hot reload" in a Flutter IDE).
+          // Notice that the counter didn't reset back to zero; the application
+          // is not restarted.
+          primarySwatch: Colors.blue,
+        ),
+        home: const LayoutWidget());
   }
 }
 
@@ -49,18 +49,20 @@ class Counter extends StatefulWidget {
 class _CounterState extends State<Counter> {
   int _count = 0;
 
-  void _incrementCounter(){
-    setState(() {      
-    _count++;
+  void _incrementCounter() {
+    setState(() {
+      _count++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Text("You have pushed button $_count times"),
-      ElevatedButton(onPressed: _incrementCounter, child: const Text("increment++"))
-    ],
+    return Column(
+      children: [
+        Text("You have pushed button $_count times"),
+        ElevatedButton(
+            onPressed: _incrementCounter, child: const Text("increment++"))
+      ],
     );
   }
 }
@@ -70,31 +72,34 @@ class LayoutWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Container(
-        height: 150,
-        color: Colors.red,
-        child: Center(
-          child: Container(
-                height: 100,
-                color: Colors.blue, 
-                child: Text("Example text"), 
-                alignment: Alignment.center,),
+    return Column(
+      children: [
+        Container(
+          height: 150,
+          color: Colors.red,
+          child: Center(
+            child: Container(
+              height: 100,
+              color: Colors.blue,
+              child: Text("Example text"),
+              alignment: Alignment.center,
+            ),
+          ),
         ),
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text("Text1"),
-          Text("Text2"),
-          Text("Text3"),
-      ],),
-      Container(
-        height: 100,
-        color: Colors.green,
-        child: Text("Contain"),
-      ),
-    ],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text("Text1"),
+            Text("Text2"),
+            Text("Text3"),
+          ],
+        ),
+        Container(
+          height: 100,
+          color: Colors.green,
+          child: Text("Contain"),
+        ),
+      ],
     );
   }
 }
@@ -105,10 +110,10 @@ class MyMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "RS II Material App",
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: LoginPage()
-      /*Scaffold(
+        title: "RS II Material App",
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: LoginPage()
+        /*Scaffold(
         appBar: AppBar(
           title: const Text("RS II desktop app"),
       ),
@@ -133,52 +138,73 @@ class MyMaterialApp extends StatelessWidget {
       child: Icon(Icons.add),
       ),
     )*/
-    );
+        );
   }
 }
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+
+  TextEditingController _usernameController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Login"),
+      appBar: AppBar(
+        title: const Text("Login"),
       ),
       body: Center(
         child: Container(
-           constraints: BoxConstraints(maxHeight: 400, maxWidth: 400),
+          constraints: BoxConstraints(maxHeight: 400, maxWidth: 400),
           child: Card(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Column(children: [
-                Image.network("https://www.fit.ba/content/public/images/og-image.jpg", height: 150, width: 150,),
-                TextField(
-                  decoration: InputDecoration(
-                    labelText: "Username",
-                    prefixIcon: Icon(Icons.email)
-                    ),
+              child: Column(
+                children: [
+                  //Image.network("https://www.fit.ba/content/public/images/og-image.jpg", height: 150, width: 150,),
+                  Image.asset(
+                    "assets/images/logo.jpg",
+                    height: 150,
+                    width: 150,
                   ),
-                  SizedBox(height: 8,),
                   TextField(
-                  decoration: InputDecoration(
-                    labelText: "Password",
-                    prefixIcon: Icon(Icons.password)
-                    ),
+                    decoration: InputDecoration(
+                        labelText: "Username", prefixIcon: Icon(Icons.email)),
+                        controller: _usernameController,
                   ),
-                  SizedBox(height: 8,),
-                  ElevatedButton(onPressed: (){
-                    print("login proceed");
-                  }, child: Text("Login"))
-              ],
+                  SizedBox(
+                    height: 8,
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                        labelText: "Password",
+                        prefixIcon: Icon(Icons.password)),
+                        controller: _passwordController,
+                  ),
+                  SizedBox(
+                    height: 8,
+                  ),
+                  ElevatedButton(
+                      onPressed: () {
+                        var username = _usernameController.text;
+                        var password = _passwordController.text;
+                        _passwordController.text=username;
+
+                        print("login proceed $username $password");
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const ProductListScreen()));
+                      },
+                      child: Text("Login"))
+                ],
               ),
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {},
-      child: Icon(Icons.add),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
       ),
     );
   }
