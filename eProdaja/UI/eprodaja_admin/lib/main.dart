@@ -1,8 +1,14 @@
+import 'package:eprodaja_admin/providers/product_provider.dart';
 import 'package:eprodaja_admin/screens/product_list_screen.dart';
+import 'package:eprodaja_admin/utils/util.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyMaterialApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => ProductProvider())],
+    child: const MyMaterialApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -148,8 +154,11 @@ class LoginPage extends StatelessWidget {
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
 
+  late ProductProvider _productProvider;
+
   @override
   Widget build(BuildContext context) {
+    _productProvider = context.read<ProductProvider>();
     return Scaffold(
       appBar: AppBar(
         title: const Text("Login"),
@@ -171,7 +180,7 @@ class LoginPage extends StatelessWidget {
                   TextField(
                     decoration: InputDecoration(
                         labelText: "Username", prefixIcon: Icon(Icons.email)),
-                        controller: _usernameController,
+                    controller: _usernameController,
                   ),
                   SizedBox(
                     height: 8,
@@ -180,20 +189,36 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                         labelText: "Password",
                         prefixIcon: Icon(Icons.password)),
-                        controller: _passwordController,
+                    controller: _passwordController,
                   ),
                   SizedBox(
                     height: 8,
                   ),
                   ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         var username = _usernameController.text;
                         var password = _passwordController.text;
-                        _passwordController.text=username;
+                        //_passwordController.text=username;
 
-                        print("login proceed $username $password");
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ProductListScreen()));
+                        Authorization.username = username;
+                        Authorization.password = password;
+
+                        try {
+                          await _productProvider.get();
+
+                          print("login proceed $username $password");
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const ProductListScreen()));
+                        } on Exception catch (e) {
+                          showDialog(context: context, 
+                          builder: (BuildContext context)=> AlertDialog(
+                            title: Text("Error"),
+                            content: Text(e.toString()),
+                            actions: [
+                              TextButton(onPressed: ()=>Navigator.pop(context), child: Text("OK"))
+                            ],
+                          ));
+                        }
                       },
                       child: Text("Login"))
                 ],
