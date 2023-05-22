@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:eprodaja_admin/models/product.dart';
+import 'package:eprodaja_admin/models/search_result.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -16,7 +18,7 @@ class ProductProvider with ChangeNotifier
     _baseUrl= const String.fromEnvironment("baseUrl", defaultValue: "https://localhost:7114/api/");
   }
 
-  Future<dynamic> get() async{
+  Future<SearchResult<Product>> get() async{
     var url = "$_baseUrl$_enpoint";
 
     var uri = Uri.parse(url);
@@ -29,7 +31,16 @@ class ProductProvider with ChangeNotifier
     {
       var data = jsonDecode(response.body);
 
-      return data;
+      var result = SearchResult<Product>();
+
+      result.count = data["count"];
+
+      for(var item in data["result"]) // =foreach
+      {
+          result.result.add(Product.fromJson(item));
+      }
+
+      return result;
     }else{
       throw new Exception("Unknown error");
     }

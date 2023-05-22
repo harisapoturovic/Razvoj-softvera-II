@@ -39,7 +39,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
               //Navigator.of(context).pop();
               
               var data = await _productProvider.get();
-              print("data: ${data['result'][0]['naziv']}");
+              print("data: ${data.result[0].naziv}");
             },
             child: Text("Login"))
       ],
